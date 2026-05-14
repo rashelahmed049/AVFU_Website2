@@ -1,0 +1,50 @@
+window.onload = function () {
+
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+    const slider = document.querySelector(".slider");
+
+    let index = 0;
+    let interval;
+
+    function showSlide(i) {
+        slides.forEach(s => s.classList.remove("active"));
+        dots.forEach(d => d.classList.remove("active"));
+
+        slides[i].classList.add("active");
+        if (dots[i]) dots[i].classList.add("active");
+
+        index = i;
+    }
+
+    function nextSlide() {
+        index = (index + 1) % slides.length;
+        showSlide(index);
+    }
+
+    function prevSlide() {
+        index = (index - 1 + slides.length) % slides.length;
+        showSlide(index);
+    }
+
+    function startAuto() {
+        interval = setInterval(nextSlide, 2500);
+    }
+
+    function stopAuto() {
+        clearInterval(interval);
+    }
+
+    // 👇 MAKE FUNCTIONS AVAILABLE TO HTML
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+    window.goToSlide = showSlide;
+
+    // Hover pause
+    slider.addEventListener("mouseenter", stopAuto);
+    slider.addEventListener("mouseleave", startAuto);
+
+    // Init
+    showSlide(0);
+    startAuto();
+};
